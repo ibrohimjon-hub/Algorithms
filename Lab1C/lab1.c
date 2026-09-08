@@ -18,8 +18,18 @@ Array *array_create_and_read(FILE *input)
     return arr;
 }
 
-void task1(Array *arr)
+int main(int argc, char **argv)
 {
+    if (argc < 2)
+        return 1;
+
+    FILE *input = fopen(argv[1], "r");
+
+    if (input == NULL)
+        return 1;
+
+    Array *arr = array_create_and_read(input);
+
     Array *positive = array_create(array_size(arr), NULL);
     Array *negative = array_create(array_size(arr), NULL);
 
@@ -54,45 +64,6 @@ void task1(Array *arr)
 
     array_delete(positive);
     array_delete(negative);
-}
-
-void task2(Array *arr)
-{
-    int count[1001] = {0};
-
-    for (size_t i = 0; i < array_size(arr); ++i)
-    {
-        int x = (int)array_get(arr, i);
-        ++count[x];
-    }
-
-    for (size_t i = 0; i < array_size(arr); ++i)
-    {
-        int x = (int)array_get(arr, i);
-
-        if (count[x] == 1)
-            printf("%d ", x);
-    }
-
-    printf("\n");
-}
-
-int main(int argc, char **argv)
-{
-    if (argc < 2)
-        return 1;
-
-    FILE *input = fopen(argv[1], "r");
-
-    if (input == NULL)
-        return 1;
-
-    Array *arr = array_create_and_read(input);
-    task1(arr);
-    array_delete(arr);
-
-    arr = array_create_and_read(input);
-    task2(arr);
     array_delete(arr);
 
     fclose(input);
