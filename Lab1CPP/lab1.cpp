@@ -1,44 +1,45 @@
-#include <stdio.h>
+#include <iostream>
+#include <fstream>
 #include "array.h"
 
-Array *array_create_and_read(FILE *input)
+Array* array_create_and_read(std::ifstream& input)
 {
     int n;
-    fscanf(input, "%d", &n);
+    input >> n;
 
-    Array *arr = array_create(n, NULL);
+    Array* arr = array_create(n);
 
     for (int i = 0; i < n; ++i)
     {
         int x;
-        fscanf(input, "%d", &x);
+        input >> x;
         array_set(arr, i, x);
     }
 
     return arr;
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     if (argc < 2)
         return 1;
 
-    FILE *input = fopen(argv[1], "r");
+    std::ifstream input(argv[1]);
 
-    if (input == NULL)
+    if (!input)
         return 1;
 
-    Array *arr = array_create_and_read(input);
+    Array* arr = array_create_and_read(input);
 
-    Array *positive = array_create(array_size(arr), NULL);
-    Array *negative = array_create(array_size(arr), NULL);
+    Array* positive = array_create(array_size(arr));
+    Array* negative = array_create(array_size(arr));
 
     size_t positive_size = 0;
     size_t negative_size = 0;
 
     for (size_t i = 0; i < array_size(arr); ++i)
     {
-        int x = (int)array_get(arr, i);
+        int x = array_get(arr, i);
 
         if (x > 0)
         {
@@ -53,20 +54,18 @@ int main(int argc, char **argv)
     }
 
     for (size_t i = 0; i < positive_size; ++i)
-        printf("%d ", (int)array_get(positive, i));
+        std::cout << array_get(positive, i) << ' ';
 
-    printf("\n");
+    std::cout << '\n';
 
     for (size_t i = 0; i < negative_size; ++i)
-        printf("%d ", (int)array_get(negative, i));
+        std::cout << array_get(negative, i) << ' ';
 
-    printf("\n");
+    std::cout << '\n';
 
     array_delete(positive);
     array_delete(negative);
     array_delete(arr);
-
-    fclose(input);
 
     return 0;
 }
