@@ -1,0 +1,6 @@
+10 5 add peek
+20 3 sub peek
+4 6 mul peek
+20 5 div peek
+5 sq peek
+16 sqrt peek
