@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "../LibraryCPP/stack.h"
+#include "stack.h"
 
 bool is_number(const std::string &token)
 {
