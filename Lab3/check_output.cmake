@@ -3,8 +3,8 @@ execute_process(
     RESULT_VARIABLE result
     OUTPUT_VARIABLE output)
 
-if(NOT result EQUAL 0)
-    message(FATAL_ERROR "Lab3 returned ${result}")
+if(NOT "${result}" STREQUAL "${EXPECTED_RESULT}")
+    message(FATAL_ERROR "Lab3 returned ${result}, expected ${EXPECTED_RESULT}")
 endif()
 
 file(READ "${EXPECTED}" expected)
