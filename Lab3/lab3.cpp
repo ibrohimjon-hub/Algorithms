@@ -5,12 +5,14 @@
 
 #include "queue.h"
 
-static std::vector<int> neighbors(const std::vector<std::string> &maze,
-                                  int row, int col)
+typedef std::vector<int> CellList;
+typedef std::vector<std::string> Maze;
+
+static CellList neighbors(const Maze &maze, int row, int col)
 {
     const int rows = static_cast<int>(maze.size());
     const int cols = static_cast<int>(maze[0].size());
-    std::vector<int> result;
+    CellList result;
 
     const auto add = [&](int r, int c)
     {
@@ -30,9 +32,9 @@ static std::vector<int> neighbors(const std::vector<std::string> &maze,
     return result;
 }
 
-static int expand_level(Queue *queue, std::vector<int> &parent,
-                        const std::vector<int> &other_parent,
-                        const std::vector<std::string> &maze, int &level_size)
+static int expand_level(Queue *queue, CellList &parent,
+                        const CellList &other_parent, const Maze &maze,
+                        int &level_size)
 {
     int next_level_size = 0;
     for (int i = 0; i < level_size; ++i)
@@ -59,7 +61,7 @@ static int expand_level(Queue *queue, std::vector<int> &parent,
     return -1;
 }
 
-static void print_maze(const std::vector<std::string> &maze)
+static void print_maze(const Maze &maze)
 {
     const int rows = static_cast<int>(maze.size());
     const int cols = static_cast<int>(maze[0].size());
@@ -101,7 +103,7 @@ int main(int argc, char **argv)
     }
 
     std::ifstream input(argv[1]);
-    std::vector<std::string> maze;
+    Maze maze;
     std::string line;
     while (std::getline(input, line))
     {
@@ -128,8 +130,8 @@ int main(int argc, char **argv)
         }
     }
 
-    std::vector<int> from_start(static_cast<std::size_t>(rows * cols), -1);
-    std::vector<int> from_finish(static_cast<std::size_t>(rows * cols), -1);
+    CellList from_start(static_cast<std::size_t>(rows * cols), -1);
+    CellList from_finish(static_cast<std::size_t>(rows * cols), -1);
     Queue *start_queue = queue_create();
     Queue *finish_queue = queue_create();
     from_start[start] = start;
